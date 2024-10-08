@@ -6,8 +6,19 @@
 import time
 from typing import List
 
-import psycopg2 as psy
+import psycopg2
 import settings
+
+
+def divide_line(quantity: int = 30):
+    """Выыводит в консоль заданное количество дефисов
+    для визуально разделения контента 
+
+    Args:
+        quantity (int, optional): Требуемое количетво дефисов. Defaults to 30.
+    """
+    print("-" * quantity)
+
 
 
 def getting_time() -> List:
@@ -47,7 +58,7 @@ def connect_to_db(
     :return: Подключение к БД
     """
     print(f"Подключение к БД {getting_time()}")
-    connect = psy.connect(
+    connect = psycopg2.connect(
         dbname=db_name,
         user=db_user,
         password=db_pass,
@@ -60,21 +71,20 @@ def connect_to_db(
     return connect
 
 
-def write_to_db(sql_query_con: str):
+def write_to_db(db_connect, sql_query_con: str):
     """
     Запись запроса в БД PostgresQL
     sql_con: - запрос в БД
     :return:
     """
     try:
-        con = wdb.connect_to_db(BOT_DB_NAME, BOT_DB_USER, BOT_DB_PASSWORD)
-        with con.cursor() as curr:
+        with db_connect.cursor() as curr:
             curr.execute(sql_query_con)
-            con.commit()
+            db_connect.commit()
             print(f"Запрос {sql_query_con} выполнен в {getting_time()}")
-            con.close()
+            db_connect.close()
         print(f"Connection is closed {getting_time()}")
         divide_line(50)
-    except psy.Error as err:
+    except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
