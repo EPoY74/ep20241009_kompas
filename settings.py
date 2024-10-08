@@ -1,21 +1,16 @@
 """
-Файл настроек для телеграмм бота
-Адрес урока (одного из):
-https://www.youtube.com/watch?v=RpiWnPNTeww
-Библиотека: pyTelegramBotAPI
+Файл настроек для тестового задания Компас
+Требуемые переменные среды:
+KOMPASS_DBNAME - Наменование БД
+KOMPASS_USER_DB - Имя пользователя БД
+KOMPASS_PASSWORD_DB - Пароль от БД
+KOMPASS_HOST_DB - Имя хоста БД
+KOMPASS_PORT_DB - Порт подключения к БД
 """
 import os
 
 print(os.environ)
 
-# Считываю переменную окружения из ОС с
-# токеном подключения к telegramm MY_TELEGRAM_API_202407_TEST_BOT
-if "MY_TELEGRAM_API_202407_TEST_BOT" not in os.environ:
-    raise ValueError(
-      """В переменной MY_TELEGRAM_API_202407_TEST_BOT 
-      должен быть токен для подключения к telegramm. Впиши его, пользователь!"""
-      )
-MY_TELEGRAM_API = os.getenv("MY_TELEGRAM_API_202407_TEST_BOT")
 
 # Считываю параметры подключеия к БД из
 #  переменных окружения операционой системы.
@@ -23,47 +18,46 @@ MY_TELEGRAM_API = os.getenv("MY_TELEGRAM_API_202407_TEST_BOT")
 #  и снижения риска утечки конфиденциальной информации
 
 # Считываю переменную окружения из ОС с
-# наименованием БД MY_TELEGRAM_BOT_DBNAME_202407_TEST
-# MY_TELEGRAM_BOT_DBNAME = os.getenv("MY_TELEGRAM_BOT_DBNAME_202407_TEST")
-if "MY_TELEGRAM_BOT_DBNAME_202407_TEST" not in os.environ:
+# наименованием БД KOMPASS_DBNAME
+if "KOMPASS_DBNAME" not in os.environ:
     raise ValueError(
-      """В переменной MY_TELEGRAM_BOT_DBNAME_202407_TEST 
+      """В переменной KOMPASS_DBNAME 
       должно быть назвнаие БД сервиса. Впиши его, пользователь!"""
       )
-MY_TELEGRAM_BOT_DBNAME = os.environ["MY_TELEGRAM_BOT_DBNAME_202407_TEST"]
+KOMPASS_DBNAME = os.environ["KOMPASS_DBNAME"]
 
 # Считываю переменную окружения из ОС с
-# именем пользователя БД MY_TELEGRAM_BOT_USER_202407_TEST
-if "MY_TELEGRAM_BOT_USER_202407_TEST" not in os.environ:
+# именем пользователя БД KOMPASS_USER_DB
+if "KOMPASS_USER_DB" not in os.environ:
     raise ValueError(
-      """В переменной MY_TELEGRAM_BOT_USER_202407_TEST 
+      """В переменной KOMPASS_USER_DB 
       должно быть имя пользователя БД сервиса. Впиши его, пользователь!"""
       )
-MY_TELEGRAM_BOT_USER = os.getenv("MY_TELEGRAM_BOT_USER_202407_TEST")
+KOMPASS_USER_DB = os.getenv("KOMPASS_USER_DB")
 
 # Считываю переменную окружения из ОС с
-# # перолем от БД  MY_TELEGRAM_BOT_PASSWORD_202407_TEST
-if "MY_TELEGRAM_BOT_PASSWORD_202407_TEST" not in os.environ:
+# # перолем от БД  KOMPASS_PASSWORD_DB
+if "KOMPASS_PASSWORD_DB" not in os.environ:
     raise ValueError(
-      """В переменной MY_TELEGRAM_BOT_PASSWORD_202407_TEST 
+      """В переменной KOMPASS_PASSWORD_DB 
       должty быть пароль БД сервиса. Впиши его, пользователь!"""
       )
-MY_TELEGRAM_BOT_PASSWORD = os.getenv("MY_TELEGRAM_BOT_PASSWORD_202407_TEST")
+KOMPASS_PASSWORD_DB = os.getenv("KOMPASS_PASSWORD_DB")
 
 # Считываю переменную окружения из ОС с
-# хостом расположеня БД MY_TELEGRAM_BOT_HOST_202407_TEST
-if "MY_TELEGRAM_BOT_HOST_202407_TEST" not in os.environ:
+# хостом расположеня БД KOMPASS_HOST_DB
+if "KOMPASS_HOST_DB" not in os.environ:
     raise ValueError(
-      """В переменной MY_TELEGRAM_BOT_HOST_202407_TEST 
-      должно быть место расположенияя  БД сервиса. Впиши его, пользователь!"""
+      """В переменной KOMPASS_BOT_HOST_DB 
+      должно быть место расположенияя (хост)  БД сервиса. Впиши его, пользователь!"""
       )
-MY_TELEGRAM_BOT_HOST = os.getenv("MY_TELEGRAM_BOT_HOST_202407_TEST")
+KOMPASS_HOST_DB = os.getenv("KOMPASS_HOST_DB")
 
 # Считываю переменную окружения из ОС с
-# портом подключения к БД MY_TELEGRAM_BOT_PORT_202407_TEST
-if "MY_TELEGRAM_BOT_PORT_202407_TEST" not in os.environ:
+# портом подключения к БД KOMPASS_PORT_DB
+if "KOMPASS_PORT_DB" not in os.environ:
     raise ValueError(
-      """В переменной MY_TELEGRAM_BOT_PORT_202407_TEST 
+      """В переменной KOMPASS_PORT_202407_DB 
       должен быть порт подключения к  БД сервиса. Впиши его, пользователь!"""
       )
-MY_TELEGRAM_BOT_PORT = os.getenv("MY_TELEGRAM_BOT_PORT_202407_TEST")
+KOMPASS_PORT_DB= os.getenv("KOMPASS_PORT_DB")
