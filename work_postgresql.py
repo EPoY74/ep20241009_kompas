@@ -36,6 +36,24 @@ def getting_time() -> List:
                               ]
     return time_now_out_get
 
+
+def conn_to_db():
+    """Выполняет подключение к БД,
+    параметры считываются из переменных окружения операцинной системы.
+    Даанная функция написана для уменьшения количества кода, 
+    так как подключение требуетс очень часто.
+
+    Returns:
+        _type_: Подключение к БД postgresql
+    """
+    DB_NAME : str = settings.KOMPASS_DBNAME
+    DB_USER : str = settings.KOMPASS_USER_DB
+    DB_PASSWORD : str = settings.KOMPASS_PASSWORD_DB
+
+    db_connect = connect_to_db(DB_NAME, DB_USER, DB_PASSWORD)
+    return db_connect
+
+
 def connect_to_db(
         db_name: str,
         db_user: str,
@@ -88,3 +106,41 @@ def write_to_db(db_connect, sql_query_con: str):
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
+    
+    
+    def make_db(db_name_new: str):
+    """
+    Создаем основную базу данных для работы приложения.
+    Создаем основную таблицу для работы приложения
+    """
+    #создаем БД
+    if not db_name_new:
+        raise ValueError("Надо передать db_new_new")
+
+    try:
+        print("\n\nСоздаю базу данных...")
+        with sqlite3.connect(db_name_new) as db_connection:
+            print("База данных создана\n")
+    except sqlite3.Error as err:
+        print(f"Ошибка:\n {str(err)}")
+
+    # Записываем таблицу, если не создана
+    try:
+        with sqlite3.connect(db_name_new) as db_connection:
+            print("Создаю таблицу для ToDo заданий в Базе Даннах")
+            db_cursor = db_connection.cursor()
+            db_cursor.execute('''
+            CREATE TABLE IF NOT EXISTS my_todo_list(
+            id INTEGER PRIMARY KEY,
+            data_of_creation,
+            date_max TEXT,
+            todo_text TEXT,
+            is_gone integer,
+            date_of_gone TEXT
+            )
+            ''')
+        print("Таблица в базе данных создана успешно\n")
+        print("База данных создана и подготовлена к работа.")
+    except sqlite3.Error as error:
+        print(f"Ошибка:\n  {str(error)}")
+
