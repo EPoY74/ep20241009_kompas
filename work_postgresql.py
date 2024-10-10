@@ -7,6 +7,8 @@ import time
 from typing import List
 
 import psycopg2
+from psycopg2.extensions import connection
+
 import settings
 
 
@@ -59,7 +61,7 @@ def connect_to_db(
         db_user: str,
         db_pass: str,
         db_host:str = "localhost",
-        db_port: str = "5432"):
+        db_port: str = "5432") -> connection:
     """
     Подключается к базе данных с заданными параметрами.
     Возвращает подключение.
@@ -73,19 +75,25 @@ def connect_to_db(
     :param db_host: Хост БД, по умолчанию "localhost"
     :param db_port: Порт подключения, по умолчанию "5432"
 
-    :return: Подключение к БД
+    :return: класс connection для подключение к БД
     """
-    print(f"Подключение к БД {getting_time()}")
-    connect = psycopg2.connect(
-        dbname=db_name,
-        user=db_user,
-        password=db_pass,
-        host=db_host,
-        port=db_port,
-    )
-    if connect:
-        print(f"БД подключена {getting_time()}")
-
+    try:
+        print(f"Подключение к БД {getting_time()}")
+        connect = psycopg2.connect(
+            dbname=db_name,
+            user=db_user,
+            password=db_pass,
+            host=db_host,
+            port=db_port,
+        )
+        if connect:
+            print(f"БД {db_name} подключена {getting_time()}")
+        else:
+            print(f"БД {db_name} не подключена {getting_time()}") 
+    except psycopg2.Error as err:
+        print(f"Ошибка: \n:{err}\n{getting_time()}")
+        raise err
+    
     return connect
 
 
@@ -106,27 +114,28 @@ def write_to_db(db_connect, sql_query_con: str):
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
+
+
+def make_db(inner_connect: connection):
     
-    
-    def make_db(db_name_new: str):
     """
     Создаем основную базу данных для работы приложения.
     Создаем основную таблицу для работы приложения
     """
-    #создаем БД
-    if not db_name_new:
-        raise ValueError("Надо передать db_new_new")
+    # #создаем БД
+    # if not db_name_new:
+    #     raise ValueError("Надо передать db_new_new")
 
-    try:
-        print("\n\nСоздаю базу данных...")
-        with sqlite3.connect(db_name_new) as db_connection:
-            print("База данных создана\n")
-    except sqlite3.Error as err:
-        print(f"Ошибка:\n {str(err)}")
+    # try:
+    #     print("\n\nСоздаю базу данных...")
+    #     with sqlite3.connect(db_name_new) as db_connection:
+    #         print("База данных создана\n")
+    # except sqlite3.Error as err:
+    #     print(f"Ошибка:\n {str(err)}")
 
     # Записываем таблицу, если не создана
     try:
-        with sqlite3.connect(db_name_new) as db_connection:
+        with inner_connect:
             print("Создаю таблицу для ToDo заданий в Базе Даннах")
             db_cursor = db_connection.cursor()
             db_cursor.execute('''
@@ -143,4 +152,3 @@ def write_to_db(db_connect, sql_query_con: str):
         print("База данных создана и подготовлена к работа.")
     except sqlite3.Error as error:
         print(f"Ошибка:\n  {str(error)}")
-
