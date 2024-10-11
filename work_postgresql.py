@@ -41,8 +41,9 @@ def getting_time() -> List:
 
 def conn_to_db():
     """Выполняет подключение к БД,
-    параметры считываются из переменных окружения операцинной системы.
-    Даанная функция написана для уменьшения количества кода, 
+    Дополнительных переметров передавать не требуется.
+    Параметры считываются из переменных окружения операцинной системы.
+    Данная функция написана для уменьшения количества кода, 
     так как подключение требуетс очень часто.
 
     Returns:
@@ -97,7 +98,9 @@ def connect_to_db(
     return connect
 
 
-def write_to_db(db_connect, sql_query_con: str):
+def write_to_db(db_connect: connection,
+                sql_query_con: str,
+                inner_var: tuple = None):
     """
     Запись запроса в БД PostgresQL
     sql_con: - запрос в БД
@@ -105,16 +108,19 @@ def write_to_db(db_connect, sql_query_con: str):
     """
     try:
         with db_connect.cursor() as curr:
-            curr.execute(sql_query_con)
+            curr.execute(sql_query_con,
+                         inner_var)
             db_connect.commit()
-            print(f"Запрос {sql_query_con} выполнен в {getting_time()}")
-            db_connect.close()
-        print(f"Connection is closed {getting_time()}")
-        divide_line(50)
+            print(f"Запрос \n{sql_query_con}
+                  \n выполнен в {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
-
+    finally:
+         db_connect.close()
+         if db_connect.closed == 1 :
+            print(f"Соединение закрыто {getting_time()}")
+            divide_line(50)
 
 def make_db(inner_connect: connection):
     
@@ -137,7 +143,7 @@ def make_db(inner_connect: connection):
     try:
         with inner_connect:
             print("Создаю таблицу для ToDo заданий в Базе Даннах")
-            db_cursor = db_connection.cursor()
+            db_cursor = inner_connect.cursor()
             db_cursor.execute('''
             CREATE TABLE IF NOT EXISTS my_todo_list(
             id INTEGER PRIMARY KEY,
