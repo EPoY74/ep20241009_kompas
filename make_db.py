@@ -12,10 +12,13 @@ def main():
     """
     # db_conn : connection = work_postgresql.connection()
 
-    # Таблица создана
+    # Таблица  users_kompass создана 
     # create_table.create_table_users()
-
-    create_table.create_table_account_kompass()
+    
+    # Таблица account_kompass
+    # create_table.create_table_account_kompass()
+    
+    create_table.create_table_operations_kompass()
 
 
 if __name__ == "__main__":
