@@ -11,7 +11,12 @@ def main():
     """Основной код и логика программы.
     """
     # db_conn : connection = work_postgresql.connection()
-    create_table.create_table_users()
+    
+    # Таблица создана
+    # create_table.create_table_users()
 
+    create_table.create_table_account_kompass()
+    
+    
 if __name__ == "__main__":
     main()
