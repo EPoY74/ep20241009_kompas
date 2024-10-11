@@ -4,14 +4,6 @@
 Почта: p174@mail.ru
 Дата: 09.10.2024
 """
-
-# import psycopg2
-from psycopg2.extensions import connection
-
-
-# import settings
-import work_postgresql
-
 import create_table
 
 
