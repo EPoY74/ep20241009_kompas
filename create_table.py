@@ -11,7 +11,7 @@ import work_postgresql
 def read_file(file_path: str):
     """
     Читает файл с текстом sql запроса 
-    по зfданному пути file_path
+    по заданному пути file_path
     
     Args:
         file_path: Имя файла, при необходиости
@@ -49,26 +49,40 @@ def create_table_users():
     """
     # Получаю содержимое файла с sql запросом
     sql_query: str = read_file("./sql/create_table_users.sql")
-    
+
     # Получаю соединения с БД
     db_conn: connection = work_postgresql.conn_to_db()
-    
+
     # Создаю таблицу в БД users_kompass
     create_table(db_conn,sql_query)
-    
-    
+
+
 def create_table_account_kompass():
     """Создаем таблицу с  данными по счетам.
     Дополнительные перметр ыне требуются, так как
     все необходимое подключается в функции
     """
-    
+
     # Получаю содержимое файла с sql запросом
     sql_query: str = read_file("./sql/create_table_account.sql")
-    
+
     # Получаю соединения с БД
     db_conn: connection = work_postgresql.conn_to_db()
-    
+
     # Создаю таблицу в БД users_kompass
     create_table(db_conn,sql_query)
-    
+
+def create_table_operations_kompass():
+    """Создаем таблицу с операциями.
+    Пареметры никакие не принимает, все 
+    подключается в функции  
+    """
+
+    # Получаю содержимое файла с sql запросом
+    sql_query: str = read_file("./sql/create_table_operations.sql")
+
+    # Получаю соединения с БД
+    db_conn: connection = work_postgresql.conn_to_db()
+
+    # Создаю таблицу в БД users_kompass
+    create_table(db_conn,sql_query)
