@@ -7,5 +7,4 @@
     accouns_close_day DATE,
     email VARCHAR,
     phone_number VARCHAR,
-    is_blocked boolean,
-    )
+    is_blocked boolean)
