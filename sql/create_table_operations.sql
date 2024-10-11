@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS operations_kompass(
     --тип операции (депозит, снятие и тд)б из отдельной таблицы
     operation_type varchar NOT NULL,
     -- дата время авторизации
-    authorization_day TIMESTAMP NOT NULL
+    authorization_day TIMESTAMP NOT NULL,
     --дата время транзакции
     transaction_date TIMESTAMP,
     --описание операции
