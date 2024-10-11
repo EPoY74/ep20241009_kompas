@@ -45,7 +45,7 @@ def create_table(inner_db_connect: connection, inner_sql_query: str):
 def create_table_users():
     """Создаю таблицу users.
     Передача дополнительных переметров не требуется, так как
-    все неодходитом подключается в данной функции.
+    все необходитом подключается в данной функции.
     """
     # Получаю содержимое файла с sql запросом
     sql_query: str = read_file("./sql/create_table_users.sql")
@@ -55,3 +55,20 @@ def create_table_users():
     
     # Создаю таблицу в БД users_kompass
     create_table(db_conn,sql_query)
+    
+    
+def create_table_account_kompass():
+    """Создаем таблицу с  данными по счетам.
+    Дополнительные перметр ыне требуются, так как
+    все необходимое подключается в функции
+    """
+    
+    # Получаю содержимое файла с sql запросом
+    sql_query: str = read_file("./sql/create_table_account.sql")
+    
+    # Получаю соединения с БД
+    db_conn: connection = work_postgresql.conn_to_db()
+    
+    # Создаю таблицу в БД users_kompass
+    create_table(db_conn,sql_query)
+    
