@@ -111,8 +111,7 @@ def write_to_db(db_connect: connection,
             curr.execute(sql_query_con,
                          inner_var)
             db_connect.commit()
-            print(f"Запрос \n{sql_query_con}
-                  \n выполнен в {getting_time()}")
+            print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
