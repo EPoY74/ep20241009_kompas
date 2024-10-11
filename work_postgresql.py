@@ -116,44 +116,7 @@ def write_to_db(db_connect: connection,
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
     finally:
-         db_connect.close()
-         if db_connect.closed == 1 :
+        db_connect.close()
+        if db_connect.closed == 1 :
             print(f"Соединение закрыто {getting_time()}")
             divide_line(50)
-
-def make_db(inner_connect: connection):
-    
-    """
-    Создаем основную базу данных для работы приложения.
-    Создаем основную таблицу для работы приложения
-    """
-    # #создаем БД
-    # if not db_name_new:
-    #     raise ValueError("Надо передать db_new_new")
-
-    # try:
-    #     print("\n\nСоздаю базу данных...")
-    #     with sqlite3.connect(db_name_new) as db_connection:
-    #         print("База данных создана\n")
-    # except sqlite3.Error as err:
-    #     print(f"Ошибка:\n {str(err)}")
-
-    # Записываем таблицу, если не создана
-    try:
-        with inner_connect:
-            print("Создаю таблицу для ToDo заданий в Базе Даннах")
-            db_cursor = inner_connect.cursor()
-            db_cursor.execute('''
-            CREATE TABLE IF NOT EXISTS my_todo_list(
-            id INTEGER PRIMARY KEY,
-            data_of_creation,
-            date_max TEXT,
-            todo_text TEXT,
-            is_gone integer,
-            date_of_gone TEXT
-            )
-            ''')
-        print("Таблица в базе данных создана успешно\n")
-        print("База данных создана и подготовлена к работа.")
-    except sqlite3.Error as error:
-        print(f"Ошибка:\n  {str(error)}")
