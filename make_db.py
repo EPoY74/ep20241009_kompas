@@ -6,22 +6,20 @@
 """
 
 # import psycopg2
-# from psycopg2.extensions import connection
+from psycopg2.extensions import connection
 
 
 # import settings
 import work_postgresql
 
+import create_table
+
 
 def main():
     """Основной код и логика программы.
     """
-    db_connect = work_postgresql.conn_to_db()
-    
-    db_connect.close()
-
+    # db_conn : connection = work_postgresql.connection()
+    create_table.create_table_users()
 
 if __name__ == "__main__":
- 
     main()
-
