@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS account_kompass(
     account_id SERIAL PRIMARY KEY,
     client_id INTEGER REFERENCES users_compass(client_id),
+    --номер счета
     account_number VARCHAR NOT NULL,
     -- валюту счета нажно забирать из другой таблицы
     account_currency VARCHAR NOT NULL,
