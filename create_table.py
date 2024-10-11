@@ -8,6 +8,22 @@ from psycopg2.extensions import connection
 import work_postgresql
 
 
+def read_file(file_path: str):
+    """
+    Читает файл с текстом sql запроса 
+    по зfданному пути file_path
+    
+    Args:
+        file_path: Имя файла, при необходиости
+        указать полный путь к файлу
+    Return:
+        Содержимое файла
+    """
+    with open(file_path, "r", encoding="utf-8") as file:
+        inner_sql_query : str = file.read()
+    return inner_sql_query
+
+
 def create_table(inner_db_connect: connection, inner_sql_query: str):
     """Функция создает таблицe с заданными параметрами
     в заданной БД
@@ -24,15 +40,18 @@ def create_table(inner_db_connect: connection, inner_sql_query: str):
         print("SQL запрос для создания таблицы users выполнен успешно")
     finally:
         print("Завершение работы функции создания таблицы users")
-        
-        
+
+
 def create_table_users():
     """Создаю таблицу users.
     Передача дополнительных переметров не требуется, так как
     все неодходитом подключается в данной функции.
     """
-    with open("./sql/create_table_users.sql", "r", encoding="utf-8") as file:
-        sql_query : str = file.read()
+    # Получаю содержимое файла с sql запросом
+    sql_query: str = read_file("./sql/create_table_users.sql")
     
+    # Получаю соединения с БД
     db_conn: connection = work_postgresql.conn_to_db()
+    
+    # Создаю таблицу в БД users_kompass
     create_table(db_conn,sql_query)
