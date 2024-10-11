@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS account_kompass(
     account_number VARCHAR NOT NULL,
     -- валюту счета нажно забирать из другой таблицы
     account_currency VARCHAR NOT NULL,
-    -- 10 это обая точность (precision)
+    -- 10 это общая точность (precision)
     -- 2 это масштаб (scale)
     account_balance DECIMAL(10,2) DEFAULT 0,
     -- Данные account_type  нужно забирать из другой таблицы
