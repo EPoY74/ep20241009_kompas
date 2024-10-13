@@ -65,11 +65,11 @@ def close_connect(inner_db_connect: connection):
     Args:
         inner_db_connect (connection): Закрываемое соединение
     """
-    
+
     inner_db_connect.close()
     if inner_db_connect.closed == 1 :
-            print(f"Соединение закрыто {getting_time()}")
-            divide_line(50)
+        print(f"Соединение закрыто {getting_time()}")
+        divide_line(50)
 
 def connect_to_db(
         db_name: str,
@@ -108,7 +108,7 @@ def connect_to_db(
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
-    
+
     return connect
 
 
