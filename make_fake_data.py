@@ -12,10 +12,9 @@ def main():
     """
     fake = Faker('ru_Ru')
 
-    start_date = date(1997, 1, 1)
-    end_date = date(2010, 10, 1)
-
-
+    # По дугому  генератор данный не берет, хотя должен.
+    start_date: date = date(1997, 1, 1)
+    end_date: date = date(2010, 10, 1)
 
     sql_name : str  = fake.name()
     sql_email: str = fake.ascii_email()
