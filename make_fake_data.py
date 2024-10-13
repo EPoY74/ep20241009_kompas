@@ -17,15 +17,15 @@ def main():
 
 
 
-    print(fake.name())
-    print(fake.ascii_email())
-    print(fake.date_between(start_date='-5y'))
-    print(fake.phone_number())
-    
+    sql_name : str  = fake.name()
+    sql_email: str = fake.ascii_email()
+    sql_account_open_day: str =  fake.date_between(start_date='-5y')
+    sql_phone_number: str = fake.phone_number()
+
     # Когда передаешь строку - не может почему-то распарсить
     # Приходится действовать явно через конструктор date
     # Это ошибка. Надо зафиксить.
-    print(fake.date_between_dates(date_start=start_date, date_end=end_date))
-    
+    sql_birthday: str = fake.date_between_dates(date_start=start_date, date_end=end_date)
+
 if __name__ == "__main__":
     main()
