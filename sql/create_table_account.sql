@@ -1,5 +1,5 @@
 -- Создает талицу со счетами клиентов банка
-CREATE TABLE IF NOT EXISTS account_kompass(
+CREATE TABLE IF NOT EXISTS account_сompass(
     account_id SERIAL PRIMARY KEY,
     client_id INTEGER REFERENCES users_compass(client_id),
     --номер счета

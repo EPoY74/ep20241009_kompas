@@ -1,6 +1,6 @@
 -- Active: 1728491536018@@127.0.0.1@5432@Kompass-db
 -- создает таблицу операции
-CREATE TABLE IF NOT EXISTS operations_kompass(
+CREATE TABLE IF NOT EXISTS operations_сompass(
     transaction_ID SERIAL PRIMARY KEY,
     account_id INTEGER REFERENCES account_kompass(account_id),
     --сумма операции
