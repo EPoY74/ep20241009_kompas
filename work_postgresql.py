@@ -134,7 +134,8 @@ def write_to_db(db_connect: connection,
         if db_connect.closed == 1 :
             print(f"Соединение закрыто {getting_time()}")
             divide_line(50)
-            
+
+
 def write_to_db_without_closing(db_connect: connection,
                 sql_query_con: str,
                 inner_var: tuple = None):
