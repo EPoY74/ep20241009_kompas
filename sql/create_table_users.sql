@@ -4,6 +4,7 @@
     first_name VARCHAR NOT NULL,
     second_name VARCHAR,
     surname VARCHAR,
+    birthday DATE NOT NULL,
     account_open_day DATE NOT NULL,
     accouns_close_day DATE,
     email VARCHAR,
