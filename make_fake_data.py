@@ -24,7 +24,7 @@ def main():
 
     db_connect: connection = work_postgresql.conn_to_db()
 
-    for i in range(2):
+    for i in range(100002):
         sql_name : str  = fake.name()
         sql_email: str = fake.ascii_email()
         sql_account_open_day: str =  fake.date_between(start_date='-5y')
@@ -34,7 +34,7 @@ def main():
         # Приходится действовать явно через конструктор date
         # Это ошибка. Надо зафиксить.
         sql_birthday: str = fake.date_between_dates(date_start=start_date, date_end=end_date)
-        print(f"{i}. {sql_name}")
+        # print(f"{i}. {sql_name}")
 
         # формирую sql запрос
         sql_query: str = read_file(("./sql/add_users_data.sql"))
@@ -45,7 +45,7 @@ def main():
                     sql_account_open_day,
                     sql_email,
                     sql_phone_number,
-                    'True')
+                    'False')
 
         # Пишем запрос в БД
         work_postgresql.write_to_db_without_closing(db_connect, sql_query, tuple(sql_datas))
