@@ -1,0 +1,1 @@
+ALTER TABLE users_compass ADD COLUMN IF NOT EXISTS birthday DATE NOT NULL;
