@@ -134,3 +134,25 @@ def write_to_db(db_connect: connection,
         if db_connect.closed == 1 :
             print(f"Соединение закрыто {getting_time()}")
             divide_line(50)
+            
+def write_to_db_without_closing(db_connect: connection,
+                sql_query_con: str,
+                inner_var: tuple = None):
+    """
+    Запись запроса в БД PostgresQL.
+    СОЕДИНЕНИЕ НЕ ЗАКРЫВАЕТСЯ!!!
+    ТРЕБУЕТСЯ ЗАКРЫТЬ СОЕДИНЕНИЕ ОТДЕЛЬНО!!!
+    sql_connect -  класс соединение с БД.
+    sql_query_con - обрабатываемй sql запрос
+    inner_var - переменные, передаваемые в запрос
+    :return:
+    """
+    try:
+        with db_connect.cursor() as curr:
+            curr.execute(sql_query_con,
+                         inner_var)
+            db_connect.commit()
+            print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
+    except psycopg2.Error as err:
+        print(f"Ошибка: \n:{err}\n{getting_time()}")
+        raise err
