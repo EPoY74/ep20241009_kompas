@@ -56,6 +56,20 @@ def conn_to_db():
     db_connect = connect_to_db(DB_NAME, DB_USER, DB_PASSWORD)
     return db_connect
 
+def close_connect(inner_db_connect: connection):
+    """Закрываю соединение с БД inner_bd_connect.
+    Закрытие вынес в отдельную функцию,
+    так как нужно иногда обрабатывать много sql запросов,
+    а открывать соединение на отдельный запрос - не выгодно
+
+    Args:
+        inner_db_connect (connection): Закрываемое соединение
+    """
+    
+    inner_db_connect.close()
+    if inner_db_connect.closed == 1 :
+            print(f"Соединение закрыто {getting_time()}")
+            divide_line(50)
 
 def connect_to_db(
         db_name: str,
