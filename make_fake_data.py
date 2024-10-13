@@ -15,6 +15,7 @@ def main():
     """
     Основной код программы.
     """
+    # Формируем экземпляр класса Faker
     fake = Faker('ru_Ru')
 
     # По другому  генератор даты данные не берет, хотя должен.
@@ -37,7 +38,7 @@ def main():
 
         # формирую sql запрос
         sql_query: str = read_file(("./sql/add_users_data.sql"))
-        
+
         # формирую данные, передаваемые в sql запрос
         sql_datas = (sql_name,
                     sql_birthday,
