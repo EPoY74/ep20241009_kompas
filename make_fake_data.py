@@ -20,7 +20,7 @@ def main():
     # По другому  генератор даты данные не берет, хотя должен.
     start_date: date = date(1997, 1, 1)
     end_date: date = date(2010, 10, 1)
-    
+
     db_connect: connection = work_postgresql.conn_to_db()
 
     for i in range(2):
