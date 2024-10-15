@@ -4,13 +4,15 @@ CREATE TABLE IF NOT EXISTS account_сompass(
     client_id INTEGER REFERENCES users_compass(client_id),
     --номер счета
     account_number VARCHAR NOT NULL,
-    -- валюту счета нажно забирать из другой таблицы
+    -- валюту счета нажно забирать из другой таблицы (рубли, есро, доллары и тд)
     account_currency VARCHAR NOT NULL,
     -- 10 это общая точность (precision)
     -- 2 это масштаб (scale)
+    --баланс счета
     account_balance DECIMAL(10,2) DEFAULT 0,
     -- Данные account_type  нужно забирать из другой таблицы
     -- что бы нельзя было накосячить и создать счет с непонятным типом
+    -- тип счета (сберегательный, накопительный и тд)
     account_type VARCHAR NOT NULL,
     account_created_date TIMESTAMP NOT NULL,
     account_closed_date TIMESTAMP);
