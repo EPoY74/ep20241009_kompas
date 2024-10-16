@@ -77,8 +77,8 @@ def generate_account_table(inner_db_conn: connection):
     for sql_resp in sql_responces:
         print(sql_resp)
     # print(sql_responces)
-    
-    
+
+
 def main():
     """
     Основной код программы.
@@ -91,6 +91,7 @@ def main():
     # generate_users_table(main_fake)
 
     generate_account_table(db_connect)
+    work_postgresql.close_connect(db_connect)
 
 if __name__ == "__main__":
     main()
