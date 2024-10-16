@@ -3,7 +3,7 @@
 
 ## 20241009 ср
 
-venv/
+.venv/
 idea/
 __pycache__/
 private/
