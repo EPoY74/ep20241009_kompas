@@ -84,7 +84,7 @@ def main():
     Основной код программы.
     """
       # Формируем экземпляр класса Faker
-    main_fake = Faker('ru_Ru')
+    # main_fake = Faker('ru_Ru')
     db_connect: connection = work_postgresql.conn_to_db()
 
     # Генерируем таблицу users_compass. Сгенерировали.
