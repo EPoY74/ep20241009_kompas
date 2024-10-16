@@ -12,7 +12,7 @@ from create_table import read_file
 import work_postgresql
 
 
-def generate_users_table(fake: Faker):
+def generate_users_table(inner_db_conn: connection, fake: Faker):
 
     """Генерирует таблицу users_compass
     с моковыми данными
@@ -21,7 +21,7 @@ def generate_users_table(fake: Faker):
     start_date: date = date(1997, 1, 1)
     end_date: date = date(2010, 10, 1)
 
-    db_connect: connection = work_postgresql.conn_to_db()
+    # db_connect: connection = work_postgresql.conn_to_db()
 
     for i in tqdm.tqdm(range(10000)):
         sql_name : str  = fake.name()
@@ -47,20 +47,27 @@ def generate_users_table(fake: Faker):
                     'False')
 
         # Пишем запрос в БД
-        work_postgresql.write_to_db_without_closing(db_connect, sql_query, tuple(sql_datas))
+        work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query, tuple(sql_datas))
 
     # Закрыываю соединение с БД после его использования.
-    work_postgresql.close_connect(db_connect)
-    
+    work_postgresql.close_connect(inner_db_conn)
 
 
-def generate_account_table(inner: connection):
+
+def generate_account_table(inner_db_conn: connection):
     """Генерирует таблицу account_table 
 
     Args:
         inner (connection): Соединение с БД
     """
 
+    sql_query:str = read_file("./sql/read_client_id_from_users.sql")
+    
+    sql_responces: tuple = work_postgresql.read_one_db(inner_db_conn, sql_query)
+    
+    for sql_resp in sql_responces:
+        print(sql_resp)
+    
 
 def main():
     """
@@ -68,11 +75,12 @@ def main():
     """
       # Формируем экземпляр класса Faker
     main_fake = Faker('ru_Ru')
+    db_connect: connection = work_postgresql.conn_to_db()
 
     # Генерируем таблицу users_compass. Сгенерировали.
     # generate_users_table(main_fake)
 
-
+    
 
 if __name__ == "__main__":
     main()
