@@ -13,7 +13,7 @@ import work_postgresql
 
 
 def generate_users_table(fake: Faker):
-  
+
     """Генерирует таблицу users_compass
     с моковыми данными
     """
@@ -51,6 +51,16 @@ def generate_users_table(fake: Faker):
 
     # Закрыываю соединение с БД после его использования.
     work_postgresql.close_connect(db_connect)
+    
+
+
+def generate_account_table(inner: connection):
+    """Генерирует таблицу account_table 
+
+    Args:
+        inner (connection): Соединение с БД
+    """
+
 
 def main():
     """
@@ -58,7 +68,7 @@ def main():
     """
       # Формируем экземпляр класса Faker
     main_fake = Faker('ru_Ru')
-    
+
     # Генерируем таблицу users_compass. Сгенерировали.
     # generate_users_table(main_fake)
 
