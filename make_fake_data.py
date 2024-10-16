@@ -13,7 +13,7 @@ import work_postgresql
 
 
 def generate_users_table(fake: Faker):
-    
+  
     """Генерирует таблицу users_compass
     с моковыми данными
     """
@@ -58,7 +58,9 @@ def main():
     """
       # Формируем экземпляр класса Faker
     main_fake = Faker('ru_Ru')
-    generate_users_table(main_fake)
+    
+    # Генерируем таблицу users_compass. Сгенерировали.
+    # generate_users_table(main_fake)
 
 
 
