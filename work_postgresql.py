@@ -8,6 +8,7 @@ from typing import List
 
 import psycopg2
 from psycopg2.extensions import connection
+from psycopg2.extensions import cursor
 
 import settings
 
@@ -114,18 +115,30 @@ def connect_to_db(
 
 def write_to_db(db_connect: connection,
                 sql_query_con: str,
-                inner_var: tuple = None):
+                inner_var: tuple = None,
+                is_sql_text: bool = False):
     """
-    Запись запроса в БД PostgresQL
-    sql_con: - запрос в БД
-    :return:
+    Запись запроса sql_query_con (str)
+    с параметрами (при необходимости) inner_var (tuple, optional) 
+    в БД PostgresQL по соединению db_connect (connection)
+    
+    Если установлен  is_sql_text (bool) True то 
+    выводим текст sql запроса в консоль , 
+    Args:
+        db_connect (connection):соединение с БД
+        sql_query_con (str): запрос в БД
+        is_sql_text (bool): выводить или нет текст sql запроса в консоль
+        inner_var (tuple, optional): параметры sql запроса, если есть. Defaults to None.
+
+    Raises:
+        err: Если падает -  пробрасываю ошибку дальше для обработки
     """
     try:
         with db_connect.cursor() as curr:
             curr.execute(sql_query_con,
                          inner_var)
             db_connect.commit()
-            print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
+            if not is_sql_text: print (f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
@@ -157,3 +170,38 @@ def write_to_db_without_closing(db_connect: connection,
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
+
+
+def read_one_db(db_connect: connection,
+                sql_query: str,
+                inner_vars: tuple = None) -> tuple:
+
+    """
+    Возврящает одну запись.
+    Читает запрос sql_query
+    с переменными (если нужны) inner_vars
+    из БД с соединением db_connect
+
+    Args:
+        db_connect (connection): Соединение с БД
+        sql_query (str): запрос
+        inner_vars (tuple, optional): переменные, передаваемые в запрос.. Defaults to None.
+
+    Raises:
+        err: Если падает -  пробрасываю ошибку дальше для обработки
+
+    Returns:
+       tuple :  Информация из БД
+    """
+
+    curr: cursor
+
+    try:
+        with db_connect.cursor as curr:
+            sql_responce: str = curr.fetchone(sql_query,inner_vars)
+
+    except psycopg2.Error as err:
+        print(f"Ошибка: \n:{err}\n{getting_time()}")
+        raise err
+
+    return sql_responce
