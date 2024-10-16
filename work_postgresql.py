@@ -201,8 +201,45 @@ def read_one_db(db_connect: connection,
     curr: cursor
 
     try:
-        with db_connect.cursor as curr:
-            sql_responce: str = curr.fetchone(sql_query,inner_vars)
+        with db_connect.cursor() as curr:
+            curr.execute(sql_query,inner_vars)
+            sql_responce: tuple|None = curr.fetchone()
+
+    except psycopg2.Error as err:
+        print(f"Ошибка: \n:{err}\n{getting_time()}")
+        raise err
+
+    return sql_responce
+
+
+def read_all_db(db_connect: connection,
+                sql_query: str,
+                inner_vars: tuple = None) -> tuple:
+
+    """
+    Возврящает все записи.
+    Читает запрос sql_query
+    с переменными (если нужны) inner_vars
+    из БД с соединением db_connect
+
+    Args:
+        db_connect (connection): Соединение с БД
+        sql_query (str): запрос
+        inner_vars (tuple, optional): переменные, передаваемые в запрос.. Defaults to None.
+
+    Raises:
+        err: Если падает -  пробрасываю ошибку дальше для обработки
+
+    Returns:
+       tuple :  Информация из БД
+    """
+
+    curr: cursor
+
+    try:
+        with db_connect.cursor() as curr:
+            curr.execute(sql_query,inner_vars)
+            sql_responce: tuple|None = curr.fetchall()
 
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
