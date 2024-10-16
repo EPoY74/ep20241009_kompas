@@ -26,7 +26,7 @@ def main():
 
     for i in range(100002):
         sql_name : str  = fake.name()
-        sql_email: str = fake.ascii_email()
+        sql_email: str = i + fake.ascii_email()
         sql_account_open_day: str =  fake.date_between(start_date='-5y')
         sql_phone_number: str = fake.phone_number()
 
