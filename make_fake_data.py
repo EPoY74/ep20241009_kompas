@@ -2,6 +2,7 @@
 БД в тетовом задании
 """
 from datetime import date
+import random
 
 from faker import Faker
 import tqdm
@@ -78,6 +79,27 @@ def generate_account_table(inner_db_conn: connection):
         print(sql_resp)
     # print(sql_responces)
 
+    # Заполняем таблицу
+    sql_query:str = read_file("./sql/read_account_open_date.sql")
+
+    i: int = 1
+    for i in tqdm.tqdm(range(1, 4)):
+        client_id: int  = i
+        account_number = ("408 07 810 0 "
+                          + str(random.randint(1,9999)).rjust(4,'0')
+                          + ' '
+                          + str(i).rjust(7,'0'))
+        currency = '810'
+        balance = 0
+        account_type = "Текущий"
+        
+        sql_responces = work_postgresql.read_one_db(inner_db_conn, sql_query, str(i))
+        for row in sql_responces:
+            created_date = str(row)
+
+        work_postgresql.divide_line()
+        print(client_id, account_number, currency, balance, account_type, created_date)
+
 
 def main():
     """
@@ -93,5 +115,8 @@ def main():
     generate_account_table(db_connect)
     work_postgresql.close_connect(db_connect)
 
+
 if __name__ == "__main__":
+    """Тут запускаю код, если мы его используем не как библиотеку
+    """
     main()
