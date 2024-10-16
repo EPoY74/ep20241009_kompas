@@ -138,7 +138,8 @@ def write_to_db(db_connect: connection,
             curr.execute(sql_query_con,
                          inner_var)
             db_connect.commit()
-            if not is_sql_text: print (f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
+            if is_sql_text:
+                print (f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
@@ -151,14 +152,16 @@ def write_to_db(db_connect: connection,
 
 def write_to_db_without_closing(db_connect: connection,
                 sql_query_con: str,
-                inner_var: tuple = None):
+                inner_var: tuple = None,
+                is_sql_text: bool = False):
     """
     Запись запроса в БД PostgresQL.
     СОЕДИНЕНИЕ НЕ ЗАКРЫВАЕТСЯ!!!
     ТРЕБУЕТСЯ ЗАКРЫТЬ СОЕДИНЕНИЕ ОТДЕЛЬНО!!!
     sql_connect -  класс соединение с БД.
     sql_query_con - обрабатываемй sql запрос
-    inner_var - переменные, передаваемые в запрос
+    inner_var - переменные, передаваемые в запрос (Defaults to None)
+    is_sql_text(bool) - Выводить в консоль(Defaults to False)
     :return:
     """
     try:
@@ -166,7 +169,8 @@ def write_to_db_without_closing(db_connect: connection,
             curr.execute(sql_query_con,
                          inner_var)
             db_connect.commit()
-            print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
+            if is_sql_text:
+                print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
