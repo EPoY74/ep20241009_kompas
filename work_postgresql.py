@@ -50,11 +50,11 @@ def conn_to_db():
     Returns:
         _type_: Подключение к БД postgresql
     """
-    DB_NAME : str = settings.KOMPASS_DBNAME
-    DB_USER : str = settings.KOMPASS_USER_DB
-    DB_PASSWORD : str = settings.KOMPASS_PASSWORD_DB
+    DB_NAME_CONSTANT : str = settings.KOMPASS_DBNAME  # pylint: disable=invalid-name
+    DB_USER : str = settings.KOMPASS_USER_DB  # pylint: disable=invalid-name
+    DB_PASSWORD : str = settings.KOMPASS_PASSWORD_DB  # pylint: disable=invalid-name
 
-    db_connect = connect_to_db(DB_NAME, DB_USER, DB_PASSWORD)
+    db_connect = connect_to_db(DB_NAME_CONSTANT, DB_USER, DB_PASSWORD)
     return db_connect
 
 def close_connect(inner_db_connect: connection):
@@ -105,7 +105,7 @@ def connect_to_db(
         if connect:
             print(f"БД {db_name} подключена {getting_time()}")
         else:
-            print(f"БД {db_name} не подключена {getting_time()}") 
+            print(f"БД {db_name} не подключена {getting_time()}")
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
@@ -181,6 +181,7 @@ def read_one_db(db_connect: connection,
                 inner_vars: tuple = None) -> tuple:
 
     """
+    --- НЕ ЗАКРЫВАЕТ СОЕДИНЕНИЕ ---
     Возврящает одну запись.
     Читает запрос sql_query
     с переменными (если нужны) inner_vars
@@ -217,6 +218,7 @@ def read_all_db(db_connect: connection,
                 inner_vars: tuple = None) -> tuple:
 
     """
+    --- НЕ ЗАКРЫВАЕТ СОЕДИНЕНИЕ ---
     Возврящает все записи.
     Читает запрос sql_query
     с переменными (если нужны) inner_vars
