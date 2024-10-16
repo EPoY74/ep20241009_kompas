@@ -4,29 +4,28 @@
 from datetime import date
 
 from faker import Faker
+import tqdm
+
 from psycopg2.extensions import connection
 
 from create_table import read_file
 import work_postgresql
 
 
-
-def main():
+def generate_users_table(fake: Faker):
+    
+    """Генерирует таблицу users_compass
+    с моковыми данными
     """
-    Основной код программы.
-    """
-    # Формируем экземпляр класса Faker
-    fake = Faker('ru_Ru')
-
     # По другому  генератор даты данные не берет, хотя должен.
     start_date: date = date(1997, 1, 1)
     end_date: date = date(2010, 10, 1)
 
     db_connect: connection = work_postgresql.conn_to_db()
 
-    for i in range(100002):
+    for i in tqdm.tqdm(range(10000)):
         sql_name : str  = fake.name()
-        sql_email: str = i + fake.ascii_email()
+        sql_email: str = str(i) + fake.ascii_email()
         sql_account_open_day: str =  fake.date_between(start_date='-5y')
         sql_phone_number: str = fake.phone_number()
 
@@ -52,6 +51,14 @@ def main():
 
     # Закрыываю соединение с БД после его использования.
     work_postgresql.close_connect(db_connect)
+
+def main():
+    """
+    Основной код программы.
+    """
+      # Формируем экземпляр класса Faker
+    main_fake = Faker('ru_Ru')
+    generate_users_table(main_fake)
 
 
 
