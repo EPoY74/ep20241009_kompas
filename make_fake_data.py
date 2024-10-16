@@ -62,13 +62,23 @@ def generate_account_table(inner_db_conn: connection):
     """
 
     sql_query:str = read_file("./sql/read_client_id_from_users.sql")
-    
+
     sql_responces: tuple = work_postgresql.read_one_db(inner_db_conn, sql_query)
-    
+
     for sql_resp in sql_responces:
         print(sql_resp)
-    
+    print(sql_responces)
 
+    work_postgresql.divide_line()
+    sql_query:str = read_file("./sql/read_rows_from_users.sql")
+
+    sql_responces: tuple = work_postgresql.read_all_db(inner_db_conn, sql_query)
+
+    for sql_resp in sql_responces:
+        print(sql_resp)
+    # print(sql_responces)
+    
+    
 def main():
     """
     Основной код программы.
@@ -80,7 +90,7 @@ def main():
     # Генерируем таблицу users_compass. Сгенерировали.
     # generate_users_table(main_fake)
 
-    
+    generate_account_table(db_connect)
 
 if __name__ == "__main__":
     main()
