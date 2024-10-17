@@ -62,43 +62,40 @@ def generate_account_table(inner_db_conn: connection):
         inner (connection): Соединение с БД
     """
 
-    sql_query:str = read_file("./sql/read_client_id_from_users.sql")
 
-    sql_responces: tuple = work_postgresql.read_one_db(inner_db_conn, sql_query)
-
-    for sql_resp in sql_responces:
-        print(sql_resp)
-    print(sql_responces)
-
-    work_postgresql.divide_line()
-    sql_query:str = read_file("./sql/read_rows_from_users.sql")
-
-    sql_responces: tuple = work_postgresql.read_all_db(inner_db_conn, sql_query)
-
-    for sql_resp in sql_responces:
-        print(sql_resp)
-    # print(sql_responces)
 
     # Заполняем таблицу
+    # запрос на получение даты заключения договора
     sql_query:str = read_file("./sql/read_account_open_date.sql")
+    
+    # Запрос на добавление данных в таблицу
+    sql_query_add: str = read_file("./sql/add account_data.sql")
 
     i: int = 1
-    for i in tqdm.tqdm(range(1, 4)):
-        client_id: int  = i
-        account_number = ("408 07 810 0 "
+    for i in tqdm.tqdm(range(5, 100000)):
+        client_id  = i
+        account_number = str(("408 07 810 0 "
                           + str(random.randint(1,9999)).rjust(4,'0')
-                          + ' '
-                          + str(i).rjust(7,'0'))
+                          + " 0 "
+                          + str(i).rjust(7,'0')))
         currency = '810'
         balance = 0
         account_type = "Текущий"
         
-        sql_responces = work_postgresql.read_one_db(inner_db_conn, sql_query, str(i))
+        #Получаю дату заключение договора клииента
+        sql_data_i:tuple = (i,)
+        sql_responces = work_postgresql.read_one_db(inner_db_conn, sql_query, sql_data_i)
         for row in sql_responces:
             created_date = str(row)
 
-        work_postgresql.divide_line()
-        print(client_id, account_number, currency, balance, account_type, created_date)
+        # Формирую массив для наполение таблицы данными
+        sql_data = (client_id, 
+                           account_number,
+                           currency,
+                           balance,
+                           account_type,
+                           created_date)
+        work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query_add, sql_data)
 
 
 def main():
