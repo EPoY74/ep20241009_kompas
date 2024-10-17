@@ -1,7 +1,7 @@
 -- Active: 1728491536018@@127.0.0.1@5432@Kompass-db@public
 -- Наполняю таблицу account данными
 
-спраINSERT INTO account_compass
+INSERT INTO account_compass
 (client_id,
  account_number,
  account_currency,
