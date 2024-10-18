@@ -3,6 +3,7 @@
 """
 from datetime import date, datetime
 import random
+from typing import List
 
 from faker import Faker
 import tqdm
@@ -109,6 +110,8 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
         max_clients (int): Число клиентов, для скольких генерирум описание
     """
 
+
+    are_data: List[tuple] = []
     i: int = 1
     # max_clients = 100
 
@@ -172,10 +175,12 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
             # print(sql_datas)
 
             # Пишем запрос в БД
-            work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query, tuple(sql_datas))
+            # work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query, tuple(sql_datas))
+            are_data.append(sql_datas)                              
 
     # Закрыываю соединение с БД после его использования.
     work_postgresql.close_connect(inner_db_conn)
+    return are_data
 
 
 def main():
