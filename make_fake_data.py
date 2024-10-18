@@ -105,19 +105,6 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker):
     с моковыми данными
     """
 
-    """
-    INSERT INTO operations_compass (
-    account_id,
-    amount,
-    operation_type,
-    authorization_day,
-    operation_description,
-    is_frozen
-    )
-    VALUES
-    (%s, %s, %S, %S, %S, %S)
-    """
-
     i: int = 1
     max_clients = 100
 
