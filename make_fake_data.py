@@ -6,7 +6,6 @@ import random
 
 from faker import Faker
 import tqdm
-from progress.bar import Bar
 
 from psycopg2.extensions import connection
 
@@ -113,10 +112,7 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
     i: int = 1
     # max_clients = 100
 
-    bar = Bar('Processing', max = max_clients)     
-
     for i in tqdm.tqdm(range(1, max_clients)):
-        bar.next()
         sql_account_id : str  = str(i)
 
         #Получаю дату заключение договора клииента
@@ -161,9 +157,6 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
                 )
             sql_transaction_date = sql_authorization_day
 
-            # sql_is_frozen: bool =  "False"
-
-
             # формирую sql запрос
             sql_query: str = read_file(("./sql/add_operations_data.sql"))
 
@@ -183,8 +176,6 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
 
     # Закрыываю соединение с БД после его использования.
     work_postgresql.close_connect(inner_db_conn)
-    bar.finish()
-
 
 
 def main():
