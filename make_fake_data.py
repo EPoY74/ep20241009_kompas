@@ -1,11 +1,12 @@
 """Генерируем фейковые данные для 
 БД в тетовом задании
 """
-from datetime import date
+from datetime import date, datetime
 import random
 
 from faker import Faker
 import tqdm
+from progress.bar import Bar
 
 from psycopg2.extensions import connection
 
@@ -63,11 +64,10 @@ def generate_account_table(inner_db_conn: connection):
     """
 
 
-
     # Заполняем таблицу
     # запрос на получение даты заключения договора
     sql_query:str = read_file("./sql/read_account_open_date.sql")
-    
+
     # Запрос на добавление данных в таблицу
     sql_query_add: str = read_file("./sql/add account_data.sql")
 
@@ -98,18 +98,115 @@ def generate_account_table(inner_db_conn: connection):
         work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query_add, sql_data)
 
 
+
+def generate_operations_table(inner_db_conn: connection, fake: Faker):
+
+    """Генерирует таблицу operations_compass
+    с моковыми данными
+    """
+
+    """
+    INSERT INTO operations_compass (
+    account_id,
+    amount,
+    operation_type,
+    authorization_day,
+    operation_description,
+    is_frozen
+    )
+    VALUES
+    (%s, %s, %S, %S, %S, %S)
+    """
+
+    i: int = 1
+    max_clients = 100
+
+    bar = Bar('Processing', max = max_clients)     
+
+    for i in tqdm.tqdm(range(1, max_clients)):
+        bar.next()
+        sql_account_id : str  = str(i)
+
+        #Получаю дату заключение договора клииента
+            # Заполняем таблицу
+        # запрос на получение даты заключения договора
+        sql_query:str = read_file("./sql/read_account_open_date.sql")
+        sql_data_i:tuple = (i,)
+        sql_responces = work_postgresql.read_one_db(inner_db_conn, sql_query, sql_data_i)
+
+        for row in sql_responces:
+            created_date = str(row)
+
+            # По другому  генератор даты данные не берет, хотя должен.
+        print(created_date.split('-'))
+        start_date: date = datetime(int(created_date.split('-')[0]),
+                                int(created_date.split('-')[1]),
+                                int(created_date.split('-')[2]) )
+        end_date: date = datetime(2024, 10, 1)
+
+
+        # Генерирую произвольное количество операций
+        iter_amount: int = 0 
+        for iter_amount in range(random.randint(10, 300)):
+            sql_amount: int = random.randint(-50000,50000)
+            # Убираю ноль, что бы не плодить сущности
+            if sql_amount == 0:
+                sql_amount  = iter_amount
+
+            if sql_amount < 0 :
+                sql_operation_type = "Кредит"
+                operation_description = f"Оплата покупки {iter_amount}"
+            elif sql_amount > 0:
+                sql_operation_type = "Дебет"
+                operation_description = f"Получение дохода {iter_amount}"
+            else:
+                sql_operation_type = f"Ошибка {iter_amount}"
+                operation_description = f"Ошибка {iter_amount}"
+
+            sql_authorization_day: str = (
+                fake.date_time_between(start_date=start_date, end_date=end_date)
+                )
+            sql_transaction_date = sql_authorization_day
+
+            # sql_is_frozen: bool =  "False"
+
+
+            # формирую sql запрос
+            sql_query: str = read_file(("./sql/add_operations_data.sql"))
+
+            # формирую данные, передаваемые в sql запрос
+            sql_datas = (sql_account_id,
+                        sql_amount,
+                        sql_operation_type,
+                        sql_authorization_day,
+                        sql_transaction_date,
+                        operation_description,
+                        'False',)
+            # print(sql_authorization_day)
+            # print(sql_datas)
+
+            # Пишем запрос в БД
+            work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query, tuple(sql_datas))
+
+    # Закрыываю соединение с БД после его использования.
+    work_postgresql.close_connect(inner_db_conn)
+    bar.finish()
+
+
+
 def main():
     """
     Основной код программы.
     """
       # Формируем экземпляр класса Faker
-    # main_fake = Faker('ru_Ru')
+    main_fake = Faker('ru_Ru')
     db_connect: connection = work_postgresql.conn_to_db()
 
     # Генерируем таблицу users_compass. Сгенерировали.
     # generate_users_table(main_fake)
 
-    generate_account_table(db_connect)
+    # generate_account_table(db_connect)
+    generate_operations_table(db_connect, main_fake)
     work_postgresql.close_connect(db_connect)
 
 
