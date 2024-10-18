@@ -1,3 +1,4 @@
+-- Active: 1728491536018@@127.0.0.1@5432@Kompass-db@public
 SELECT 
 operations_compass.account_id, 
 operations_compass.amount, 
