@@ -81,7 +81,7 @@ def generate_account_table(inner_db_conn: connection):
         currency = '810'
         balance = 0
         account_type = "Текущий"
-        
+
         #Получаю дату заключение договора клииента
         sql_data_i:tuple = (i,)
         sql_responces = work_postgresql.read_one_db(inner_db_conn, sql_query, sql_data_i)
@@ -175,8 +175,11 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
             # print(sql_datas)
 
             # Пишем запрос в БД
-            # work_postgresql.write_to_db_without_closing(inner_db_conn, sql_query, tuple(sql_datas))
-            are_data.append(sql_datas)                              
+            work_postgresql.write_to_db_without_close_and_commit(
+                inner_db_conn, sql_query, tuple(sql_datas)
+                )
+        inner_db_conn.commit()
+            # are_data.append(sql_datas)
 
     # Закрыываю соединение с БД после его использования.
     work_postgresql.close_connect(inner_db_conn)
