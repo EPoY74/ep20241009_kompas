@@ -190,7 +190,7 @@ def main():
     # generate_users_table(main_fake)
 
     # generate_account_table(db_connect)
-    generate_operations_table(db_connect, main_fake)
+    generate_operations_table(db_connect, main_fake, 110000)
     work_postgresql.close_connect(db_connect)
 
 
