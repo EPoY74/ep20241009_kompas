@@ -99,14 +99,19 @@ def generate_account_table(inner_db_conn: connection):
 
 
 
-def generate_operations_table(inner_db_conn: connection, fake: Faker):
-
-    """Генерирует таблицу operations_compass
+def generate_operations_table(inner_db_conn: connection, fake: Faker, max_clients:int):
+    """
+    Генерирует таблицу operations_compass
     с моковыми данными
+
+    Args:
+        inner_db_conn (connection): Соединение с БД
+        fake (Faker): Экземпляр класса Faaker
+        max_clients (int): Число клиентов, для скольких генерирум описание
     """
 
     i: int = 1
-    max_clients = 100
+    # max_clients = 100
 
     bar = Bar('Processing', max = max_clients)     
 
@@ -135,7 +140,7 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker):
 
         # Генерирую произвольное количество операций
         iter_amount: int = 0 
-        for iter_amount in range(random.randint(10, 300)):
+        for iter_amount in range(random.randint(10, 50)):
             sql_amount: int = random.randint(-50000,50000)
             # Убираю ноль, что бы не плодить сущности
             if sql_amount == 0:
