@@ -174,7 +174,29 @@ def write_to_db_without_closing(db_connect: connection,
     except psycopg2.Error as err:
         print(f"Ошибка: \n:{err}\n{getting_time()}")
         raise err
-
+def write_to_db_without_close_and_commit(db_connect: connection,
+                sql_query_con: str,
+                inner_var: tuple = None,
+                is_sql_text: bool = False):
+    """
+    Запись запроса в БД PostgresQL.
+    СОЕДИНЕНИЕ НЕ ЗАКРЫВАЕТСЯ!!!
+    ТРЕБУЕТСЯ ЗАКРЫТЬ СОЕДИНЕНИЕ ОТДЕЛЬНО!!!
+    sql_connect -  класс соединение с БД.
+    sql_query_con - обрабатываемй sql запрос
+    inner_var - переменные, передаваемые в запрос (Defaults to None)
+    is_sql_text(bool) - Выводить в консоль(Defaults to False)
+    :return:
+    """
+    try:
+        with db_connect.cursor() as curr:
+            curr.execute(sql_query_con,
+                         inner_var)
+            if is_sql_text:
+                print(f"Запрос \n{sql_query_con}\n выполнен в {getting_time()}")
+    except psycopg2.Error as err:
+        print(f"Ошибка: \n:{err}\n{getting_time()}")
+        raise err
 
 def read_one_db(db_connect: connection,
                 sql_query: str,
