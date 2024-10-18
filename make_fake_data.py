@@ -138,10 +138,11 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker):
             created_date = str(row)
 
             # По другому  генератор даты данные не берет, хотя должен.
-        print(created_date.split('-'))
-        start_date: date = datetime(int(created_date.split('-')[0]),
-                                int(created_date.split('-')[1]),
-                                int(created_date.split('-')[2]) )
+        # print(created_date.split('-')) Изза этой какашки расссыпается прогресс бар?
+
+        # Распаковываю кортеж
+        year, month, day = map(int, created_date.split('-'))
+        start_date: date = datetime(year, month, day)
         end_date: date = datetime(2024, 10, 1)
 
 
