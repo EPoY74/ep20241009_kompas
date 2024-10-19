@@ -11,4 +11,4 @@ INSERT INTO operations_compass
     is_frozen
 )
 VALUES
-(%s, %s, %s, %s, %s, %s, %s)
+(90, 200, 'Дебет', "2021-06-23 06:06:09", "2021-06-23 06:06:09", "Вторая операция", FALSE)
