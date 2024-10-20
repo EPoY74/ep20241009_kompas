@@ -26,6 +26,28 @@ FROM
 WHERE
     ac.account_id = 100
 GROUP BY
-    us.client_id,
+    ac.client_id,
     ac.account_id,
     oc.transaction_date::date;
+
+
+
+SELECT 
+    ac.client_id AS inner_client_id,
+    ac.account_id AS inner_account_id,
+    oc.transaction_date::date AS balance_at_day,
+    SUM(oc.amount) AS closing_balance
+FROM 
+    operations_compass AS oc 
+    JOIN account_compass AS ac ON ac.account_id = oc.account_id
+    -- JOIN users_compass AS us ON ac.client_id = us.client_id
+WHERE ac.account_id = 100
+GROUP BY
+    ac.client_id,
+    ac.account_id,
+    oc.transaction_date::date;
+
+
+SELECT *
+FROM account_compass
+WHERE client_id = 81
