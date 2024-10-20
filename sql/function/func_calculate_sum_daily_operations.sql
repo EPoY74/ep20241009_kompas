@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Active: 1728491536018@@127.0.0.1@5432@Kompass-db@public
 CREATE OR REPLACE  FUNCTION calculate_sum_daily_operations()
 RETURNS VOID AS $$
@@ -17,6 +18,7 @@ FROM
     operations_compass AS oc 
     JOIN account_compass AS ac ON ac.account_id = oc.account_id
     JOIN users_compass AS us ON ac.client_id = us.client_id
+WHERE ac.account_id = 100
 GROUP BY
     us.client_id,
     ac.account_id,
