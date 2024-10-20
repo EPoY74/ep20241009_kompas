@@ -2,7 +2,7 @@
 -- создает таблицу операции
 CREATE TABLE IF NOT EXISTS operations_сompass(
     transaction_ID SERIAL PRIMARY KEY,
-    account_id INTEGER REFERENCES account_kompass(account_id),
+    account_id INTEGER REFERENCES account_compass(account_id),
     --сумма операции
     amount DECIMAL (10,2) NOT NULL DEFAULT 0,
     --тип операции (депозит, снятие и тд)б из отдельной таблицы
