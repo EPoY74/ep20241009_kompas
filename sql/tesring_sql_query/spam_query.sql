@@ -91,3 +91,7 @@ FROM
       ac.client_id,
       ac.account_id,
       oc.transaction_date::date) as bal
+
+
+DELETE FROM operations_compass
+WHERE transaction_id BETWEEN 3522719 AND 3522722;
