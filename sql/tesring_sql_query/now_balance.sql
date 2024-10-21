@@ -1,3 +1,5 @@
+-- Считакт баланс на текущий день
+
 SELECT 
     cb.client_id,
     cb.account_id,
@@ -8,13 +10,14 @@ FROM
 JOIN 
     operations_compass AS oc ON cb.account_id = oc.account_id 
     
-WHERE cb.account_id = 100 
+WHERE cb.account_id = 1 
     AND cb.balance_at_day::date = (
         SELECT MAX(balance_at_day::date) 
         FROM closing_balance
-        WHERE account_id = 100
+        WHERE account_id = 1
     )
  GROUP BY 
     cb.closing_balance,
     cb.client_id,
-    cb.account_id;
+    cb.account_id
+    ;
