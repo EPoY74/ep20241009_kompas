@@ -138,7 +138,7 @@ def generate_operations_table(inner_db_conn: connection, fake: Faker, max_client
 
 
         # Генерирую произвольное количество операций
-        iter_amount: int = 0 
+        iter_amount: int = 0
         for iter_amount in range(random.randint(10, 50)):
             sql_amount: int = random.randint(-50000,50000)
             # Убираю ноль, что бы не плодить сущности
