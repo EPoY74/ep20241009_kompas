@@ -95,3 +95,58 @@ FROM
 
 DELETE FROM operations_compass
 WHERE transaction_id BETWEEN 3522719 AND 3522722;
+
+
+    SELECT balance_at_day 
+    FROM closing_balance
+    WHERE account_id = 1 AND balance_at_day < '2023-12-10'
+    ORDER BY balance_at_day DESC
+    LIMIT 1
+
+
+SELECT 
+    cb.client_id,
+    cb.account_id,
+    cb.closing_balance AS cb_close_day,
+    SUM(oc.amount) AS amount_at_day,
+    COALESCE(cb.closing_balance, 0) + COALESCE(SUM(oc.amount), 0) AS current_balance
+FROM 
+    closing_balance AS cb
+FULL OUTER JOIN 
+    operations_compass AS oc 
+    ON cb.account_id = oc.account_id 
+    AND oc.transaction_date::date = '2024-10-21'
+WHERE 
+    cb.account_id = 1
+    AND (
+        cb.balance_at_day::date = (
+            SELECT balance_at_day::date 
+            FROM closing_balance
+            WHERE account_id = 1 
+              AND balance_at_day::date < '2024-10-21'
+            ORDER BY balance_at_day DESC
+            LIMIT 1
+        )
+        OR cb.balance_at_day IS NULL
+    )
+GROUP BY 
+    cb.client_id,
+    cb.closing_balance,
+    cb.account_id;
+
+
+SELECT 
+SUM(operations_compass.amount)
+FROM operations_compass
+WHERE account_id = 1;
+
+
+
+SELECT 
+    SUM(operations_compass.amount)
+FROM operations_compass
+WHERE 
+    account_id = 1 
+AND
+    transaction_date <= '2023-12-10 12:00:00';
+
