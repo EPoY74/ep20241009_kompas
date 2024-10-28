@@ -110,24 +110,30 @@ SELECT
     cb.closing_balance AS cb_close_day,
     SUM(oc.amount) AS amount_at_day,
     COALESCE(cb.closing_balance, 0) + COALESCE(SUM(oc.amount), 0) AS current_balance
-FROM 
+    FROM 
     closing_balance AS cb
 FULL OUTER JOIN 
     operations_compass AS oc 
     ON cb.account_id = oc.account_id 
-    AND oc.transaction_date::date = '2024-10-21'
+    AND oc.transaction_date::date = '2023-10-21'
 WHERE 
     cb.account_id = 1
     AND (
+        -- cb.balance_at_day::date = (
+        --     SELECT balance_at_day::date 
+        --     FROM closing_balance
+        --     WHERE account_id = 100 
+        --       AND balance_at_day::date < '2023-10-21'
+        --     ORDER BY balance_at_day DESC
+        --     LIMIT 1
+        -- )
         cb.balance_at_day::date = (
-            SELECT balance_at_day::date 
+            SELECT max(balance_at_day::date)
             FROM closing_balance
-            WHERE account_id = 1 
-              AND balance_at_day::date < '2024-10-21'
-            ORDER BY balance_at_day DESC
-            LIMIT 1
+            WHERE account_id = 1
+              AND balance_at_day::date < '2023-10-21'
         )
-        OR cb.balance_at_day IS NULL
+        -- OR cb.balance_at_day IS NULL
     )
 GROUP BY 
     cb.client_id,
@@ -135,10 +141,27 @@ GROUP BY
     cb.account_id;
 
 
+SELECT *,
+ previous_closing_balance.closing_balance + coalesce(current_day_operations.day_amount, 0) as final_result
+FROM
+    (SELECT 1 as account_id union select 100 as account_id) as account
+-- LEFT JOIN closing_balance as cb ON cb.account_id = account.account_id and 
+-- or "CROSS APPLY?"
+CROSS JOIN LATERAL (SELECT closing_balance, balance_at_day
+            FROM closing_balance as cb
+            where cb.account_id = account.account_id and balance_at_day < '2024-10-21'
+            order by balance_at_day DESC
+            limit 1) as previous_closing_balance
+CROSS JOIN LATERAL (select sum(op.amount) as day_amount
+                    from operations_compass as op  
+                    where op.account_id = account.account_id
+                        and op.transaction_date::date = '2024-10-21') AS current_day_operations
+
+
 SELECT 
 SUM(operations_compass.amount)
 FROM operations_compass
-WHERE account_id = 1;
+WHERE account_id = 100;
 
 
 
@@ -146,7 +169,7 @@ SELECT
     SUM(operations_compass.amount)
 FROM operations_compass
 WHERE 
-    account_id = 1 
+    account_id = 100 
 AND
     transaction_date <= '2023-12-10 12:00:00';
 
